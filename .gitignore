@@ -1,5 +1,4 @@
 .idea
 auth.yaml
-*.csv
 .ipynb_checkpoints/
 __pycache__/
