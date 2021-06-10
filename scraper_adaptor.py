@@ -1,4 +1,5 @@
 import abc
+import json
 from typing import Optional
 
 import yaml
@@ -31,12 +32,11 @@ class ScraperAdaptor(abc.ABC):
                 return
             self._has_data = True
 
-    @abc.abstractmethod
-    def to_dict(self):
-        raise NotImplementedError
+    def json_str(self) -> str:
+        return json.dumps(self.to_dict(), indent=4, default=str)
 
     @abc.abstractmethod
-    def json_str(self):
+    def to_dict(self):
         raise NotImplementedError
 
     @abc.abstractmethod
