@@ -37,7 +37,7 @@ def write_record(new_data: list, filename: str):
 
 
 INSTAGRAM_CONFIG_FILE = 'auth.yaml'
-FAKE_TAG_RECORD_FILE = "fake_account_posts.csv"
+FAKE_TAG_RECORD_FILE = "data/fake_account_posts.csv"
 if __name__ == '__main__':
     headers = {"sessionid": read_config(INSTAGRAM_CONFIG_FILE, 'session_id')}
 
@@ -51,6 +51,6 @@ if __name__ == '__main__':
         post_ids, next_max_id = scrape_tag("fakeaccount", headers, max_id)
         print(f"got {len(post_ids)} posts")
         print("complete, writing records")
-        write_record([(post_id, ts, max_id) for post_id in post_ids], "fake_account_posts.csv")
+        write_record([(post_id, ts, max_id) for post_id in post_ids], "data/fake_account_posts.csv")
         max_id = next_max_id
         sleep(2)
