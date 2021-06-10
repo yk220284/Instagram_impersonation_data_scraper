@@ -7,13 +7,11 @@ from instascrape import Post
 from post_adaptor import PostAdaptor
 
 df = pd.read_csv("data/fake_account_posts.csv")
-print(df.size)
-print(df['code'].unique().size)
 
 t1 = time.perf_counter()
 
 
-def download_image(post_code):
+def download_post(post_code):
     print(f"saving {post_code}")
     post = PostAdaptor(Post(post_code))
     post.save_media(f"data/img/{post_code}.png")
