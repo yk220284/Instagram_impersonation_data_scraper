@@ -1,9 +1,22 @@
 import json
 from collections import deque
-from typing import Dict
+from typing import Dict, List
 
 
 class JsonDict:
+    @staticmethod
+    def save(json_dicts: List[dict], file_path):
+        with open(file_path, 'w') as f:
+            json.dump(json_dicts, f, sort_keys=True, indent=4, default=str)
+
+    @staticmethod
+    def extend(json_dicts: List[dict], file_path):
+        with open(file_path, 'r+') as file:
+            file_data = json.load(file)
+            file_data.extend(json_dicts)
+            file.seek(0)
+            json.dump(file_data, file, indent=4)
+
     def __init__(self, json_dict: dict):
         """
         Adaptor for python dictionary to handle dictionary json conversion and utilities
