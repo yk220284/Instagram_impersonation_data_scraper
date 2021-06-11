@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 import yaml
 
-from json_processor import collect_values
+from instascrape_adaptor.json_processor import JsonDict
 
 
 def read_config(config_file: str, key: str) -> Optional[str]:
@@ -23,8 +23,8 @@ def scrape_tag(tag_str: str, headers: dict, max_id: str = '') -> Tuple[List[str]
     base_url = f"https://www.instagram.com/explore/tags/{tag_str}/?__a=1"
     url = base_url + f"&max_id={max_id}" if max_id else base_url
     response = requests.get(url, cookies=headers)
-    json_dict = response.json()
-    rlt = collect_values(json_dict, POST_ID_KEY, MAX_ID_KEY)
+    json_dict = JsonDict(response.json())
+    rlt = json_dict.collect_values(POST_ID_KEY, MAX_ID_KEY)
     new_max_id, *_ = list(filter(lambda s: isinstance(s, str) and s.endswith("==") and s != max_id, rlt[MAX_ID_KEY]))
     return rlt[POST_ID_KEY], new_max_id
 
@@ -42,8 +42,9 @@ if __name__ == '__main__':
     headers = {"sessionid": read_config(INSTAGRAM_CONFIG_FILE, 'session_id')}
 
     df = pd.read_csv(FAKE_TAG_RECORD_FILE)
-    max_id: str = '' if df.size == 0 or pd.isna(df.iloc[-1]['max_id']) else df.iloc[-1]['max_id']
-
+    # max_id: str = '' if df.size == 0 or pd.isna(df.iloc[-1]['max_id']) else df.iloc[-1]['max_id']
+    max_id = ''
+    
     for _ in range(0, 40):
         ts = int(time.time())
         print(f"scraped tag at {datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')}")

@@ -1,10 +1,11 @@
 import abc
-import json
 import os
 from typing import Optional, Dict
 
 import requests
 import yaml
+
+from instascrape_adaptor.json_processor import JsonDict
 
 
 class ScraperAdaptor(abc.ABC):
@@ -48,7 +49,7 @@ class ScraperAdaptor(abc.ABC):
             self._has_data = True
 
     def json_str(self) -> str:
-        return json.dumps(self.to_dict(), indent=4, default=str)
+        return str(JsonDict(self.to_dict()))
 
     @abc.abstractmethod
     def to_dict(self) -> Optional[Dict[str, any]]:

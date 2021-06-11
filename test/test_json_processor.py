@@ -1,7 +1,7 @@
 import json
 from unittest import TestCase
 
-from json_processor import collect_values
+from instascrape_adaptor.json_processor import collect_values
 
 
 class Test(TestCase):
