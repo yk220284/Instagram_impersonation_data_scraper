@@ -1,5 +1,6 @@
 import concurrent.futures
 import time
+from typing import List
 
 import pandas as pd
 from instascrape import Post
@@ -7,9 +8,16 @@ from instascrape import Post
 from instascrape_adaptor.json_processor import JsonDict
 from instascrape_adaptor.post_adaptor import PostAdaptor
 
-df = pd.read_csv("data/fake_account_posts.csv")
 
-t1 = time.perf_counter()
+def timing(func):
+    def wrapper(*arg, **kw):
+        t1 = time.perf_counter()
+        res = func(*arg, **kw)
+        t2 = time.perf_counter()
+        print(f'Finished in {t2 - t1} seconds by {func.__name__}')
+        return res
+
+    return wrapper
 
 
 def download_post(post_code: str, dir_path="data/img") -> dict:
@@ -20,14 +28,17 @@ def download_post(post_code: str, dir_path="data/img") -> dict:
     return post.to_dict()
 
 
-codes = df['code'].unique()[:30]
-# for code in codes:
-#     download_image(code)
+@timing
+def scrape_posts(post_codes: List[str]):
+    # for code in codes:
+    # download_post(post_codes)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = executor.map(download_post, post_codes)
+        JsonDict.save([result for result in results if result], "data/posts.json")
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    results = executor.map(download_post, codes)
 
-JsonDict.save([result for result in results if result], "data/posts.json")
-t2 = time.perf_counter()
-
-print(f'Finished in {t2 - t1} seconds')
+if __name__ == '__main__':
+    df = pd.read_csv("data/fake_account_posts.csv")
+    codes = df['code'].unique()
+    scrape_posts(codes)
+    print(f"scraped {len(codes)} posts")
