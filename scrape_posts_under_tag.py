@@ -1,7 +1,31 @@
-from instascrape import Profile
+import concurrent.futures
+import time
 
-from profile_adaptor import ProfileAdaptor
+import pandas as pd
+from instascrape import Post
 
-profile = ProfileAdaptor(Profile("annaraya_6697"))
-print(profile.json_str())
-profile.save_media("data/profile_pic")
+from instascrape_adaptor.post_adaptor import PostAdaptor
+
+df = pd.read_csv("data/fake_account_posts.csv")
+
+t1 = time.perf_counter()
+
+
+def download_post(post_code: str, dir_path="data/img") -> str:
+    print(f"saving {post_code}")
+    post = PostAdaptor(Post(post_code))
+    post.save_media(dir_path)
+    print(f"post {post_code} saved...")
+    return post.json_str()
+
+
+codes = df['code'].unique()[:30]
+# for code in codes:
+#     download_image(code)
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    executor.map(download_image, codes)
+
+t2 = time.perf_counter()
+
+print(f'Finished in {t2 - t1} seconds')

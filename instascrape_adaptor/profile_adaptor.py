@@ -1,6 +1,6 @@
 from typing import Optional, Dict
 
-from scraper_adaptor import ScraperAdaptor
+from instascrape_adaptor.scraper_adaptor import ScraperAdaptor
 
 
 class ProfileAdaptor(ScraperAdaptor):
