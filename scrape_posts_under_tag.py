@@ -24,8 +24,9 @@ codes = df['code'].unique()[:30]
 #     download_image(code)
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    executor.map(download_image, codes)
+    results = executor.map(download_post, codes)
 
+print(list(results))
 t2 = time.perf_counter()
 
 print(f'Finished in {t2 - t1} seconds')

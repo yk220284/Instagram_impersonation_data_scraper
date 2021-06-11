@@ -18,5 +18,5 @@ class PostAdaptor(ScraperAdaptor):
     def save_media(self, dir_path: str):
         self._scrape()
         if self._has_data:
-            file_path = self.create_path(dir_path, self.to_dict().get('shortcode'))
+            file_path = self.create_path(dir_path, f"{self.to_dict().get('shortcode')}.png")
             self._scraper.download(file_path)

@@ -23,7 +23,7 @@ class ScraperAdaptor(abc.ABC):
     @staticmethod
     def download_image(file_path: str, img_url: str):
         img_bytes = requests.get(img_url).content
-        img_name = f'{file_path}.jpg'
+        img_name = f'{file_path}.png'
         with open(img_name, 'wb') as img_file:
             img_file.write(img_bytes)
 
