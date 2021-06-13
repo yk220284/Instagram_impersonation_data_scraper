@@ -6,6 +6,7 @@ from instascrape_adaptor.scraper_adaptor import ScraperAdaptor
 class ProfileAdaptor(ScraperAdaptor):
     def __init__(self, scraper):
         super().__init__(scraper)
+        self.username = scraper.source
 
     def to_dict(self) -> Optional[Dict[str, any]]:
         self._scrape()
