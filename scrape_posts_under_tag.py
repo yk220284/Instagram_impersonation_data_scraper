@@ -38,6 +38,7 @@ def scrape_posts(post_codes: List[str]):
 
 
 if __name__ == '__main__':
+    # download_post("CPzaJf2n9BV")
     df = pd.read_csv("data/fake_account_posts.csv")
     codes = df['code'].unique()
     scrape_posts(codes)
