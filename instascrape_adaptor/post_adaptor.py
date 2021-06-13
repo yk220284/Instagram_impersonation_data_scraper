@@ -8,6 +8,7 @@ class PostAdaptor(ScraperAdaptor):
 
     def __init__(self, scraper):
         super().__init__(scraper)
+        self.shortcode = scraper.source
 
     def to_dict(self) -> Optional[Dict[str, any]]:
         self._scrape()
