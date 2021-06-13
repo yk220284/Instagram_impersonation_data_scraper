@@ -3,18 +3,11 @@ import os
 from typing import Optional, Dict
 
 import requests
-import yaml
-
+from authenticator import Authenticator
 from instascrape_adaptor.json_processor import JsonDict
 
 
 class ScraperAdaptor(abc.ABC):
-    @staticmethod
-    def read_config(key: str, config_file: str = 'auth.yaml') -> Optional[str]:
-        with open(config_file, 'r') as config_file:
-            config = yaml.load(config_file, Loader=yaml.BaseLoader)
-            return config.get(key, '')
-
     @staticmethod
     def create_path(dir_path: str, file_name: str):
         if not os.path.isdir(dir_path):
@@ -28,11 +21,12 @@ class ScraperAdaptor(abc.ABC):
         with open(img_name, 'wb') as img_file:
             img_file.write(img_bytes)
 
-    def __init__(self, scraper):
+    def __init__(self, scraper, authenticator=Authenticator("auth.yaml")):
+        self.__authenticator = authenticator
         self._headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                           "Chrome/79.0.3945.74 Safari/537.36 Edg/79.0.309.43",
-            "cookie": f'sessionid={self.read_config("session_id")};'
+            "cookie": f'sessionid={self.__authenticator.read_config("session_id")};'
         }
         self._scraper = scraper
         self._has_data = False

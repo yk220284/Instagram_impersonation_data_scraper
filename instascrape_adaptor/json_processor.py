@@ -30,7 +30,10 @@ class JsonDict:
         return self.to_json()
 
     def __repr__(self):
-        return self.json_dict
+        return self.json_dict.__repr__()
+
+    def __getitem__(self, item):
+        return self.json_dict[item]
 
     def to_json(self) -> str:
         return json.dumps(self.json_dict, indent=4, default=str)
@@ -57,3 +60,8 @@ class JsonDict:
                     if isinstance(v, (list, dict)):
                         q.append(v)
         return rlt
+
+    @classmethod
+    def loads(cls, file_path: str) -> List["JsonDict"]:
+        with open(file_path, "r") as file:
+            return [cls(d) for d in json.load(file)]
