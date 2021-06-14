@@ -20,7 +20,7 @@ def timing(func):
     return wrapper
 
 
-def download_post(post_code: str, dir_path="data/img") -> dict:
+def download_post(post_code: str, dir_path: str) -> dict:
     print(f"saving {post_code}")
     post = PostAdaptor(Post(post_code))
     post.save_media(dir_path)
@@ -29,17 +29,17 @@ def download_post(post_code: str, dir_path="data/img") -> dict:
 
 
 @timing
-def scrape_posts(post_codes: List[str]):
+def scrape_posts(post_codes: List[str], post_json_file, post_img_file):
     # for code in codes:
     # download_post(post_codes)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(download_post, post_codes)
-        JsonDict.save([result for result in results if result], "data/posts.json")
+        args = [(code, post_img_file) for code in post_codes]
+        results = executor.map(lambda p: download_post(*p), args)
+        JsonDict.save([result for result in results if result], post_json_file)
 
 
 if __name__ == '__main__':
-    # download_post("CPzaJf2n9BV")
-    df = pd.read_csv("data/fake_account_posts.csv")
-    codes = df['code'].unique()
-    scrape_posts(codes)
+    df = pd.read_csv("data/fake_account_posts_0614.csv", header=None)
+    codes = df[0].unique()
+    scrape_posts(codes, 'data/post_0614.json', 'data/img_0614')
     print(f"scraped {len(codes)} posts")
