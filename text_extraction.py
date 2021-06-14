@@ -22,8 +22,8 @@ class ImageTextExtractor:
             self.words = pytesseract.image_to_string(self.img).split()
         return self.words
 
-    def find_closest_words(self, target: str, top_k: int, distance_threshold: float = float('inf')) -> Dict[
-        str, List[dict]]:
+    def find_closest_words(self, target: str, top_k: int, distance_threshold: float = float('inf')) \
+            -> Dict[str, List[dict]]:
         """
 
         :param distance_threshold:
