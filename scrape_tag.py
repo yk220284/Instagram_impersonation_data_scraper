@@ -1,7 +1,8 @@
-import csv
+import os
 import time
 from datetime import datetime
 from time import sleep
+
 import requests
 
 from authenticator import Authenticator
@@ -12,11 +13,20 @@ class TagScraper:
     POST_ID_KEY = "code"
     MAX_ID_KEY = "next_max_id"
 
-    def __init__(self, tag: str, max_id: str = '', authenticator=Authenticator("auth.yaml")):
+    def __init__(self, tag: str, max_id_file: str = '', authenticator=Authenticator("auth.yaml")):
         self._headers = {"sessionid": authenticator.read_config('session_id')}
         self.base_url = f"https://www.instagram.com/explore/tags/{tag}/?__a=1"
-        self.max_id = max_id
+        self.max_id = ''
         self.post_codes = []
+        if max_id_file and os.path.isfile(max_id_file):
+            self.read_max_id_from_file(max_id_file)
+
+    def read_max_id_from_file(self, max_id_file: str):
+        with open(max_id_file, 'r') as f:
+            max_id_str = f.readline()
+            if not max_id_str.endswith("=="):
+                raise Exception("max_id_str should end with \'==\'")
+            self.max_id = max_id_str
 
     def scrape_page(self):
         url = self.base_url + f"&max_id={self.max_id}" if self.max_id else self.base_url
@@ -30,22 +40,25 @@ class TagScraper:
         print(f"have {len(self.post_codes)} posts")
 
     def save_record(self, post_file: str, max_id_file: str):
-        with open(post_file, 'a') as file:
+        with open(post_file, 'a+') as file:
             for code in self.post_codes:
                 file.write(code)
                 file.write('\n')
-        with open(max_id_file, 'w') as file:
+        with open(max_id_file, 'w+') as file:
             file.write(self.max_id)
+
+    def scrape_pages(self, page_cnt: int, sleep_interval: int = 1):
+        for _ in range(0, page_cnt):
+            ts = int(time.time())
+            print(f"scraped tag at {datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')}")
+            self.scrape_page()
+            sleep(sleep_interval)
 
 
 FAKE_TAG_RECORD_FILE = "data/fake_account_posts.csv"
+max_id_file = "data/max_id.txt"
 if __name__ == '__main__':
-    with open("data/max_id.txt", 'r') as f:
-        max_id = f.readline()
-    fake_account_tag = TagScraper('fakeaccount', max_id)
-    for _ in range(0, 5):
-        ts = int(time.time())
-        print(f"scraped tag at {datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')}")
-        fake_account_tag.scrape_page()
-        sleep(2)
-    fake_account_tag.save_record("data/fake_account_posts_0614.csv", 'data/max_id.txt')
+    # fake_account_tag = TagScraper('fakeaccount', max_id_file)
+    fake_account_tag = TagScraper('fakeaccount')
+    fake_account_tag.scrape_pages(page_cnt=5, sleep_interval=2)
+    fake_account_tag.save_record("data/fake_account_posts_0615.csv", 'data/max_id.txt')
