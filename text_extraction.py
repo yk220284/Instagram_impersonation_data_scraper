@@ -70,14 +70,14 @@ def extract_fake_username(json_dict, img_dir, top_k=2, distance_threshold=4):
 @timing
 def find_similar_names_from_posts(post_json_file, img_dir, rlt_file):
     json_dicts = JsonDict.loads(post_json_file)
-    # for json_dict in json_dicts:
-    #     extract_fake_username(json_dict, img_dir)
+    saved_codes = set([post['shortcode'] for post in JsonDict.loads(rlt_file)])
+    unsaved_json_dicts = [json_dict for json_dict in json_dicts if json_dict['shortcode'] not in saved_codes]
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        args = [(json_dict, img_dir) for json_dict in json_dicts]
+        args = [(json_dict, img_dir) for json_dict in unsaved_json_dicts]
         results = executor.map(lambda p: extract_fake_username(*p), args)
         rlt = [result for result in results if result]
         print(f"Found {len(rlt)} pair")
-        JsonDict.save(rlt, rlt_file)
+        JsonDict.extend(rlt, rlt_file)
 
 
 if __name__ == '__main__':
