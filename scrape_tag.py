@@ -55,8 +55,6 @@ class TagScraper:
             sleep(sleep_interval)
 
 
-FAKE_TAG_RECORD_FILE = "data/fake_account_posts.csv"
-max_id_file = "data/max_id.txt"
 if __name__ == '__main__':
     # fake_account_tag = TagScraper('fakeaccount', max_id_file)
     fake_account_tag = TagScraper('fakeaccount')

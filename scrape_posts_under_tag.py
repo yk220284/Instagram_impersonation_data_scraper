@@ -1,6 +1,5 @@
 import concurrent.futures
 import time
-from typing import List
 
 import pandas as pd
 from instascrape import Post
@@ -29,17 +28,18 @@ def download_post(post_code: str, dir_path: str) -> dict:
 
 
 @timing
-def scrape_posts(post_codes: List[str], post_json_file, post_img_file):
+def scrape_posts(posts_csv_file: str, post_json_file, post_img_file):
+    df = pd.read_csv(posts_csv_file, header=None)
+    post_codes = df[0].unique()
     # for code in codes:
     # download_post(post_codes)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         args = [(code, post_img_file) for code in post_codes]
         results = executor.map(lambda p: download_post(*p), args)
-        JsonDict.save([result for result in results if result], post_json_file)
+        rlt = [result for result in results if result]
+        JsonDict.save(rlt, post_json_file)
+    print(f"scraped {len(rlt)} posts")
 
 
 if __name__ == '__main__':
-    df = pd.read_csv("data/fake_account_posts_0614.csv", header=None)
-    codes = df[0].unique()
-    scrape_posts(codes, 'data/post_0614.json', 'data/img_0614')
-    print(f"scraped {len(codes)} posts")
+    scrape_posts("data/fake_account_posts_0615.csv", 'data/post_0615.json', 'data/img/0615')
