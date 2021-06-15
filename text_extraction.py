@@ -8,16 +8,20 @@ from PIL import Image
 
 from instascrape_adaptor.json_processor import JsonDict
 from scrape_posts_under_tag import timing
+from username_policy import UserName
 
 
 class ImageTextExtractor:
-    def __init__(self, img_path: str):
+    def __init__(self, img_path: str, rule=None):
         self.img = Image.open(img_path)
         self.words = None
+        self.rule = rule
 
     def extract_words(self):
         if self.words is None:
             self.words = pytesseract.image_to_string(self.img).split()
+            if self.rule:
+                self.words = list(filter(self.rule, self.words))
         return self.words
 
     def find_closest_words(self, target: str, top_k: int, distance_threshold: float = float('inf')) \
@@ -49,11 +53,11 @@ def extract_fake_username(json_dict, img_dir, top_k=2, distance_threshold=4):
     print(f"processing username: {json_dict['username']}, code: {json_dict['shortcode']}")
     img_path = f"{img_dir}/{json_dict['shortcode']}.png"
     try:
-        image = ImageTextExtractor(img_path)
+        image = ImageTextExtractor(img_path, UserName.is_username)
     except Exception as err:
         print(err)
         return None
-    rlt = image.find_closest_words(username, top_k, distance_threshold)
+    rlt = image.find_closest_words(username, top_k, len(username) // 2)
     if rlt[username]:
         # image contain words
         json_dict['fake_names'] = rlt[username]
@@ -62,19 +66,17 @@ def extract_fake_username(json_dict, img_dir, top_k=2, distance_threshold=4):
 
 
 @timing
-def find_similar_names(json_dicts, img_dir, rlt_file):
+def find_similar_names(post_json_file, img_dir, rlt_file):
+    json_dicts = JsonDict.loads(post_json_file)
     # for json_dict in json_dicts:
     #     extract_fake_username(json_dict, img_dir)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         args = [(json_dict, img_dir) for json_dict in json_dicts]
         results = executor.map(lambda p: extract_fake_username(*p), args)
-
         rlt = [result for result in results if result]
-
         print(f"Found {len(rlt)} pair")
         JsonDict.save(rlt, rlt_file)
 
 
 if __name__ == '__main__':
-    json_dicts = JsonDict.loads("data/post_0614.json")
-    find_similar_names(json_dicts, "data/img_0614", "data/fake_username_0614.json")
+    find_similar_names("data/post_0615.json", "data/img/0615", "data/fake_username_0615.json")
