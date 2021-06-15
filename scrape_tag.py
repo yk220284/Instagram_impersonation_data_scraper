@@ -5,8 +5,8 @@ from time import sleep
 
 import requests
 
-from authenticator import Authenticator
 from instascrape_adaptor.json_processor import JsonDict
+from utils import Authenticator
 
 
 class TagScraper:

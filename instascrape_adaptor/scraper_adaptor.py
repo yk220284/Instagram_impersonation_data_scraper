@@ -3,8 +3,9 @@ import os
 from typing import Optional, Dict
 
 import requests
-from authenticator import Authenticator
+
 from instascrape_adaptor.json_processor import JsonDict
+from utils import Authenticator
 
 
 class ScraperAdaptor(abc.ABC):

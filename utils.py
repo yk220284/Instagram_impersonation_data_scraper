@@ -1,6 +1,17 @@
-from typing import Optional
+import time
 
 import yaml
+
+
+def timing(func):
+    def wrapper(*arg, **kw):
+        t1 = time.perf_counter()
+        res = func(*arg, **kw)
+        t2 = time.perf_counter()
+        print(f'Finished in {t2 - t1} seconds by {func.__name__}')
+        return res
+
+    return wrapper
 
 
 class Authenticator:
@@ -11,8 +22,3 @@ class Authenticator:
         with open(self.__config_file, 'r') as config_file:
             config = yaml.load(config_file, Loader=yaml.BaseLoader)
             return config.get(key, '')
-
-
-if __name__ == '__main__':
-    a = Authenticator()
-    print(a.read_config("google"))

@@ -1,22 +1,11 @@
 import concurrent.futures
-import time
 
 import pandas as pd
 from instascrape import Post
 
 from instascrape_adaptor.json_processor import JsonDict
 from instascrape_adaptor.post_adaptor import PostAdaptor
-
-
-def timing(func):
-    def wrapper(*arg, **kw):
-        t1 = time.perf_counter()
-        res = func(*arg, **kw)
-        t2 = time.perf_counter()
-        print(f'Finished in {t2 - t1} seconds by {func.__name__}')
-        return res
-
-    return wrapper
+from utils import timing
 
 
 def download_post(post_code: str, dir_path: str) -> dict:

@@ -66,7 +66,7 @@ def extract_fake_username(json_dict, img_dir, top_k=2, distance_threshold=4):
 
 
 @timing
-def find_similar_names(post_json_file, img_dir, rlt_file):
+def find_similar_names_from_posts(post_json_file, img_dir, rlt_file):
     json_dicts = JsonDict.loads(post_json_file)
     # for json_dict in json_dicts:
     #     extract_fake_username(json_dict, img_dir)
@@ -79,4 +79,4 @@ def find_similar_names(post_json_file, img_dir, rlt_file):
 
 
 if __name__ == '__main__':
-    find_similar_names("data/post_0615.json", "data/img/0615", "data/fake_username_0615.json")
+    find_similar_names_from_posts("data/post_0615.json", "data/img/0615", "data/fake_username_0615.json")
