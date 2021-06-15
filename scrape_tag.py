@@ -48,9 +48,9 @@ class TagScraper:
             file.write(self.max_id)
 
     def scrape_pages(self, page_cnt: int, sleep_interval: int = 1):
-        for _ in range(0, page_cnt):
+        for i in range(0, page_cnt):
             ts = int(time.time())
-            print(f"scraped tag at {datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')}")
+            print(f"scraping tag at page {i + 1} {datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')}")
             self.scrape_page()
             sleep(sleep_interval)
 

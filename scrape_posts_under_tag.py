@@ -20,8 +20,8 @@ def download_post(post_code: str, dir_path: str) -> dict:
 def scrape_posts(posts_csv_file: str, post_json_file, post_img_file):
     df = pd.read_csv(posts_csv_file, header=None)
     post_codes = df[0].unique()
-    # for code in codes:
-    # download_post(post_codes)
+    # for code in post_codes:
+    #     download_post(code, post_img_file)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         args = [(code, post_img_file) for code in post_codes]
         results = executor.map(lambda p: download_post(*p), args)
