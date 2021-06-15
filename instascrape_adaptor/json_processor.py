@@ -61,7 +61,7 @@ class JsonDict:
                         q.append(v)
         return rlt
 
-    @classmethod
-    def loads(cls, file_path: str) -> List["JsonDict"]:
+    @staticmethod
+    def loads(file_path: str) -> dict:
         with open(file_path, "r") as file:
-            return [cls(d) for d in json.load(file)]
+            return json.load(file)
