@@ -21,6 +21,8 @@ class ImageTextExtractor:
         if self.words is None:
             self.words = pytesseract.image_to_string(self.img).split()
             if self.rule:
+                # remove repeated words
+                self.words = set(self.words)
                 self.words = list(filter(self.rule, self.words))
         return self.words
 
