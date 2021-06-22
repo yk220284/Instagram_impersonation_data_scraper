@@ -1,6 +1,6 @@
 import abc
 import os
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple
 
 import requests
 
@@ -32,23 +32,30 @@ class ScraperAdaptor(abc.ABC):
         self._has_data = False
         self.__attempt_scrape = False
 
-    def _scrape(self):
+    def _scrape(self) -> bool:
+        """
+        Use scraper passed in to scrape
+        :return: bool status indicates whether scrape is successful
+        """
         if not self.__attempt_scrape:
             self.__attempt_scrape = True
             try:
                 self._scraper.scrape(headers=self._headers)
             except Exception as err:
                 print(f"failed scrape, err: {err}")
-                return
+                return False
             self._has_data = True
+            return True
+        return self._has_data
 
     def json_str(self) -> str:
-        return str(JsonDict(self.to_dict()))
+        d, _ = self.to_dict()
+        return str(JsonDict(d))
 
     @abc.abstractmethod
-    def to_dict(self) -> Optional[Dict[str, any]]:
+    def to_dict(self) -> Tuple[Dict[str, any], bool]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def save_media(self, dir_path: str):
+    def save_media(self, dir_path: str) -> bool:
         raise NotImplementedError

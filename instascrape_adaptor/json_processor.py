@@ -15,7 +15,7 @@ class JsonDict:
             file_data = json.load(file)
             file_data.extend(json_dicts)
             file.seek(0)
-            json.dump(file_data, file, indent=4)
+            json.dump(file_data, file, sort_keys=True, indent=4, default=str)
 
     def __init__(self, json_dict: dict):
         """
