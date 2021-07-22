@@ -28,5 +28,5 @@ Scraping posts' shortcode under a tag
 """
 Scrape posts 
 """
-scrape_posts(POST_CODE___CSV, POST___JSON, IMG_DIR)
-# find_similar_names_from_posts(POST___JSON, IMG_DIR, PROCESSED_POST___JSON)
+# scrape_posts(POST_CODE___CSV, POST___JSON, IMG_DIR)
+find_similar_names_from_posts(POST___JSON, IMG_DIR, PROCESSED_POST___JSON)

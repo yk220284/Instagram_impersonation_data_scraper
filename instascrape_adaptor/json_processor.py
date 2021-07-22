@@ -8,7 +8,7 @@ class JsonDict:
     @staticmethod
     def save(json_dicts: List[dict], file_path):
         with open(file_path, 'w') as f:
-            json.dump(json_dicts, f, sort_keys=True, indent=4, default=str)
+            simplejson.dump(json_dicts, f, sort_keys=True, indent=4, default=str, ignore_nan=True)
 
     @staticmethod
     def extend(json_dicts: List[dict], file_path):
@@ -16,7 +16,7 @@ class JsonDict:
             file_data = json.load(file)
             file_data.extend(json_dicts)
             file.seek(0)
-            json.dump(file_data, file, sort_keys=True, indent=4, default=str)
+            simplejson.dump(file_data, file, sort_keys=True, indent=4, default=str, ignore_nan=True)
 
     def __init__(self, json_dict: dict):
         """

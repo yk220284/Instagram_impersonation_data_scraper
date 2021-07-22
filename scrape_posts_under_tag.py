@@ -9,10 +9,10 @@ from instascrape_adaptor.post_adaptor import PostAdaptor
 from utils import timing
 
 
-def download_post(post_code: str, dir_path: str) -> Tuple[str, bool]:
+def download_post(post_code: str, dir_path: str) -> Tuple[dict, bool]:
     print(f"saving {post_code}")
     post = PostAdaptor(Post(post_code), getProfile=True)
-    return post.json_str(), post.save_media(dir_path)
+    return post.to_dict()[0], post.save_media(dir_path)
 
 
 @timing
@@ -21,7 +21,7 @@ def scrape_posts(posts_csv_file: str, post_json_file, post_img_file):
     post_codes = df[0].unique()
     saved_codes = set([post['shortcode'] for post in JsonDict.loads(post_json_file)])
     unsaved_codes = [code for code in post_codes if code not in saved_codes]
-    unsaved_codes = unsaved_codes[:100]
+    unsaved_codes = unsaved_codes[:50]
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         args = [(code, post_img_file) for code in unsaved_codes]
         results = executor.map(lambda p: download_post(*p), args)

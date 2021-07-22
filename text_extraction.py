@@ -60,12 +60,12 @@ class ImageTextExtractor:
                 if len(rlt) > top_k:
                     heapq.heappop(rlt)
         # format
-        return [word for _, word in rlt], bool(self.words())
+        return [word for _, word in rlt], bool(self.extract_words())
 
 
 def extract_fake_username(json_dict, img_dir, top_k=2):
     username = json_dict['username']
-    img_path = f"{img_dir}/{json_dict['shortcode']}.png"
+    img_path = f"{img_dir}/{json_dict['shortcode']}_post.png"
     print(f"processing username: {json_dict['username']}, code: {json_dict['shortcode']}")
 
     image = ImageTextExtractor(img_path, UserName.is_username)
@@ -92,7 +92,6 @@ def find_similar_names_from_posts(post_json_file, img_dir, rlt_file):
         print(f"processed {len(rlt)} posts")
         JsonDict.extend(rlt, rlt_file)
 
-
-img = ImageTextExtractor("data/0615/img/CMiLRPWJF5B.png")
-img.extract_texts()
-print(img.texts)
+# img = ImageTextExtractor("data/0615/img/CMiLRPWJF5B.png")
+# img.extract_texts()
+# print(img.texts)

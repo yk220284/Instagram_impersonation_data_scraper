@@ -35,10 +35,10 @@ class PostAdaptor(ScraperAdaptor):
             if d['is_video']:
                 return False
             try:
-                display_url_path = self.create_path(dir_path, f"{d.get('shortcode')}_display_url.png")
+                display_url_path = self.create_path(dir_path, f"{d.get('shortcode')}_post")
                 self.download_image(display_url_path, d['display_url'])
                 if self.getProfile:
-                    profile_pic_url_path = self.create_path(dir_path, f"{d.get('shortcode')}_profile_pic_url.png")
+                    profile_pic_url_path = self.create_path(dir_path, f"{d.get('shortcode')}_profile")
                     self.download_image(profile_pic_url_path, d['profile']['profile_pic_url_hd'])
             except Exception as err:
                 print(f"Error: {err} when saving post {d}\n")

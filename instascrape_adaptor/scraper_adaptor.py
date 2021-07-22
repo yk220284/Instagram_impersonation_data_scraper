@@ -42,7 +42,7 @@ class ScraperAdaptor(abc.ABC):
             try:
                 self._scraper.scrape(headers=self._headers)
             except Exception as err:
-                print(f"failed scrape, err: {err}")
+                print(f"failed scrape {self._scraper.source}, {self._scraper.source} err: {err}")
                 return False
             self._has_data = True
             return True
