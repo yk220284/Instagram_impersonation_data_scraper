@@ -1,4 +1,5 @@
 import json
+import simplejson
 from collections import deque
 from typing import Dict, List
 
@@ -36,7 +37,7 @@ class JsonDict:
         return self.json_dict[item]
 
     def to_json(self) -> str:
-        return json.dumps(self.json_dict, indent=4, default=str)
+        return simplejson.dumps(self.json_dict, indent=4, default=str, ignore_nan=True)
 
     def collect_values(self, *target_keys: str) -> Dict[str, list]:
         """

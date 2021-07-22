@@ -19,11 +19,19 @@ class ImageTextExtractor:
             print(f"err opening image: {err}")
             self.img = None
         self.words = None
+        self.texts = None
         self.rule = rule
+
+    def extract_texts(self):
+        if not self.img:
+            return ""
+        if self.texts is None:
+            self.texts = pytesseract.image_to_string(self.img)
+        return self.texts
 
     def extract_words(self):
         if self.words is None:
-            self.words = pytesseract.image_to_string(self.img).split()
+            self.words = self.extract_texts().split()
             if self.rule:
                 # remove repeated words
                 self.words = set(self.words)
@@ -31,7 +39,7 @@ class ImageTextExtractor:
         return self.words
 
     def find_closest_words(self, target: str, top_k: int, distance_threshold: float = float('inf')) \
-            -> Tuple[Dict[str, List[dict]], bool]:
+            -> Tuple[list, bool]:
         """
 
         :param distance_threshold:
@@ -43,7 +51,7 @@ class ImageTextExtractor:
         success: bool if request succeeds
         """
         if not isinstance(target, str) or self.img is None:
-            return {target: []}, False
+            return [], False
         rlt = []
         for word in self.extract_words():
             d = textdistance.levenshtein(target, word)
@@ -52,7 +60,7 @@ class ImageTextExtractor:
                 if len(rlt) > top_k:
                     heapq.heappop(rlt)
         # format
-        return {target: [{word: distance} for distance, word in rlt]}, bool(rlt)
+        return [word for _, word in rlt], bool(self.words())
 
 
 def extract_fake_username(json_dict, img_dir, top_k=2):
@@ -61,13 +69,14 @@ def extract_fake_username(json_dict, img_dir, top_k=2):
     print(f"processing username: {json_dict['username']}, code: {json_dict['shortcode']}")
 
     image = ImageTextExtractor(img_path, UserName.is_username)
+    json_dict['extracted_text'] = image.extract_texts()
 
     # set distance threshold
     distance_threshold = len(username) // 2 if isinstance(username, str) else float('inf')
 
     rlt, success = image.find_closest_words(username, top_k, distance_threshold)
     if success:
-        json_dict['fake_names'] = rlt[username]
+        json_dict['fake_names'] = rlt
     return json_dict, success
 
 
@@ -80,4 +89,10 @@ def find_similar_names_from_posts(post_json_file, img_dir, rlt_file):
         args = [(json_dict, img_dir) for json_dict in unsaved_json_dicts]
         results = executor.map(lambda p: extract_fake_username(*p), args)
         rlt = [r for r, success in results if success]
-        JsonDict.save(rlt, rlt_file)
+        print(f"processed {len(rlt)} posts")
+        JsonDict.extend(rlt, rlt_file)
+
+
+img = ImageTextExtractor("data/0615/img/CMiLRPWJF5B.png")
+img.extract_texts()
+print(img.texts)
