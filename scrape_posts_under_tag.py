@@ -12,7 +12,8 @@ from utils import timing
 def download_post(post_code: str, dir_path: str) -> Tuple[dict, bool]:
     print(f"saving {post_code}")
     post = PostAdaptor(Post(post_code), getProfile=True)
-    return post.to_dict()[0], post.save_media(dir_path)
+    postJson, hasProfile = post.to_dict();
+    return postJson, hasProfile and post.save_media(dir_path)
 
 
 @timing

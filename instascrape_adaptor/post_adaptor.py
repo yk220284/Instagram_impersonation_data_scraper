@@ -25,14 +25,17 @@ class PostAdaptor(ScraperAdaptor):
                 self.profile = ProfileAdaptor(Profile(json_dict['username']))
                 # if cannot scrape profile, reset getProfile to false
                 profile_dict, self.getProfile = self.profile.to_dict()
+                if not self.getProfile:
+                    print(f"Can't collect profile for {self.shortcode}")
+                    return {'shortcode': self.shortcode}, False
                 profile_dict = {"profile": profile_dict} if self.getProfile else {}
             return {**{k: json_dict[k] for k in self.TARGET_ATTRIBUTES}, **profile_dict}, True
         return {'shortcode': self.shortcode}, False
 
     def save_media(self, dir_path: str) -> bool:
         if self._scrape():
-            d, _ = self.to_dict()
-            if d['is_video']:
+            d, success = self.to_dict()
+            if not success or d['is_video']:
                 return False
             try:
                 display_url_path = self.create_path(dir_path, f"{d.get('shortcode')}_post")

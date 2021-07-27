@@ -18,6 +18,17 @@ class JsonDict:
             file.seek(0)
             simplejson.dump(file_data, file, sort_keys=True, indent=4, default=str, ignore_nan=True)
 
+    @staticmethod
+    def loads(file_path: str) -> dict:
+        with open(file_path, "r") as file:
+            return json.load(file)
+
+    @staticmethod
+    def delete(file_path: str, shortcodes: list):
+        json_dicts = JsonDict.loads(file_path)
+        JsonDict.save(list(filter(lambda json_dict: json_dict['shortcode'] not in set(shortcodes), json_dicts)),
+                      file_path)
+
     def __init__(self, json_dict: dict):
         """
         Adaptor for python dictionary to handle dictionary json conversion and utilities
@@ -61,8 +72,3 @@ class JsonDict:
                     if isinstance(v, (list, dict)):
                         q.append(v)
         return rlt
-
-    @staticmethod
-    def loads(file_path: str) -> dict:
-        with open(file_path, "r") as file:
-            return json.load(file)
