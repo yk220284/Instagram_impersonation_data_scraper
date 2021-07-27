@@ -37,7 +37,7 @@ class TagScraper:
             new_max_id, *_ = list(
                 filter(lambda s: isinstance(s, str) and s.endswith("==") and s != self.max_id, rlt[self.MAX_ID_KEY]))
         except Exception as err:
-            new_max_id, *_ = self.max_id
+            new_max_id = self.max_id
             print(f"err: {err} max_id: {new_max_id}")
         self.max_id = new_max_id
         self.post_codes.extend(rlt[self.POST_ID_KEY])
@@ -61,7 +61,7 @@ class TagScraper:
 
 def scrape_tags(hashtag, max_id_file, post_csv_file):
     fake_account_tag = TagScraper(hashtag, max_id_file)
-    fake_account_tag.scrape_pages(page_cnt=10, sleep_interval=2)
+    fake_account_tag.scrape_pages(page_cnt=1, sleep_interval=2)
     fake_account_tag.save_record(post_csv_file, max_id_file)
 
 
