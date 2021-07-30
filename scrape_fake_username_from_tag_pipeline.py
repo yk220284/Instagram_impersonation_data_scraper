@@ -9,7 +9,7 @@ from text_extraction import find_similar_names_from_posts
 """
 Configuring Destinations
 """
-DATA_DIR = 'data/0727'
+DATA_DIR = 'data/0730'
 
 if __name__ == '__main__':
     """
@@ -20,7 +20,8 @@ if __name__ == '__main__':
     """
     Scraping posts' shortcode under a tag
     """
-    scrape_tags('fakeaccout', MAX_ID_FILE, POST_CODE___CSV)
+    # scrape_tags('fakeaccouts', MAX_ID_FILE, POST_CODE___CSV)
+    scrape_tags('reportthem', MAX_ID_FILE, POST_CODE___CSV)
 
     """
     Scrape posts 

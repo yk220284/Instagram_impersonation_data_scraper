@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from time import sleep
 
+import pandas as pd
 import requests
 
 from instascrape_adaptor.json_processor import JsonDict
@@ -35,10 +36,10 @@ class TagScraper:
         rlt = json_dict.collect_values(self.POST_ID_KEY, self.MAX_ID_KEY)
         try:
             new_max_id, *_ = list(
-                filter(lambda s: isinstance(s, str) and s.endswith("==") and s != self.max_id, rlt[self.MAX_ID_KEY]))
+                filter(lambda s: isinstance(s, str) and s.endswith("=="), rlt[self.MAX_ID_KEY]))
         except Exception as err:
-            new_max_id = self.max_id
-            print(f"err: {err} max_id: {new_max_id}")
+            print(f"err: {err} max_ids: {rlt[self.MAX_ID_KEY]}")
+            return
         self.max_id = new_max_id
         self.post_codes.extend(rlt[self.POST_ID_KEY])
         print(f"have {len(self.post_codes)} posts")
@@ -51,6 +52,15 @@ class TagScraper:
         with open(max_id_file, 'w+') as file:
             file.write(self.max_id)
 
+    def tidy_record(self, post_file: str):
+        df = pd.read_csv(post_file, header=None)
+        post_codes = df[0].unique()
+        with open(post_file, 'w+') as file:
+            for code in post_codes:
+                file.write(code)
+                file.write('\n')
+        print(f'tidy total: {len(post_codes)} posts')
+
     def scrape_pages(self, page_cnt: int, sleep_interval: int = 1):
         for i in range(0, page_cnt):
             ts = int(time.time())
@@ -61,8 +71,9 @@ class TagScraper:
 
 def scrape_tags(hashtag, max_id_file, post_csv_file):
     fake_account_tag = TagScraper(hashtag, max_id_file)
-    fake_account_tag.scrape_pages(page_cnt=1, sleep_interval=2)
+    fake_account_tag.scrape_pages(page_cnt=10, sleep_interval=2)
     fake_account_tag.save_record(post_csv_file, max_id_file)
+    fake_account_tag.tidy_record(post_csv_file)
 
 
 if __name__ == '__main__':
