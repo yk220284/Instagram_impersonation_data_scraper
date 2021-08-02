@@ -8,5 +8,6 @@ from instascrape_adaptor.profile_adaptor import ProfileAdaptor
 # profile.save_media("data/profile_pic")
 
 if __name__ == '__main__':
-    p = PostAdaptor(Post("CReOJiqDZAh"))
-    print(p.json_str())
+    # p = PostAdaptor(Post("CReOJiqDZAh"))
+    # print(p.json_str())
+    ProfileAdaptor(Profile("di_mota")).json_str()

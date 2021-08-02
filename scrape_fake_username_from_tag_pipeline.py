@@ -9,7 +9,7 @@ from text_extraction import find_similar_names_from_posts
 """
 Configuring Destinations
 """
-DATA_DIR = 'data/0730'
+DATA_DIR = 'data/0805'
 
 if __name__ == '__main__':
     """
@@ -17,23 +17,25 @@ if __name__ == '__main__':
     """
     POST_CODE___CSV, MAX_ID_FILE, POST___JSON, PROCESSED_POST___JSON, IMG_DIR = create_scraping_folder(DATA_DIR)
 
-    """
-    Scraping posts' shortcode under a tag
-    """
-    # scrape_tags('fakeaccouts', MAX_ID_FILE, POST_CODE___CSV)
-    scrape_tags('reportthem', MAX_ID_FILE, POST_CODE___CSV)
+    # """
+    # Scraping posts' shortcode under a tag
+    # """
+    # scrape_tags('fakeaccount', MAX_ID_FILE, POST_CODE___CSV)
+    # scrape_tags('fakeaccounts', MAX_ID_FILE, POST_CODE___CSV)
+    # scrape_tags('reportthem', MAX_ID_FILE, POST_CODE___CSV)
+    # scrape_tags('scammers', MAX_ID_FILE, POST_CODE___CSV)
 
-    """
-    Scrape posts 
-    """
+    # """
+    # Scrape posts
+    # """
     # scrape_posts(POST_CODE___CSV, POST___JSON, IMG_DIR)
 
-    """
-    Process posts 
-    """
+    # """
+    # Process posts
+    # """
     # find_similar_names_from_posts(POST___JSON, IMG_DIR, PROCESSED_POST___JSON)
 
-    """
-    Clear up posts and images 
-    """
+    # """
+    # Clear up posts and images
+    # """
     # delete_failed_posts_and_media(POST___JSON, PROCESSED_POST___JSON, IMG_DIR)

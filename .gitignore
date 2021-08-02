@@ -4,3 +4,4 @@ auth.yaml
 __pycache__/
 data/
 *.ipynb
+firebase/.ipynb_checkpoints/
