@@ -1,7 +1,14 @@
 .idea
-auth.yaml
 .ipynb_checkpoints/
+.DS_Store
 __pycache__/
+
+# API keys
+auth.yaml
+
+# Scraped data
 data/
-*.ipynb
+
+# Analysis
 firebase/.ipynb_checkpoints/
+*.ipynb
