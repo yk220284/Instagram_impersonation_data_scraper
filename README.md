@@ -1,7 +1,7 @@
 # Instagram Impersonation Data Scraper
 
 This script focuses on data scrapping. Data persistence, exploration and labelling is dealt
-by [this Angular app] (https://github.com/yk220284/instagram-data-viewer).
+by [this Angular app](https://github.com/yk220284/instagram-data-viewer).
 
 ## Scrapping pipeline
 
