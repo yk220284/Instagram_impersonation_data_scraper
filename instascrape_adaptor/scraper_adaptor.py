@@ -1,10 +1,10 @@
 import abc
 import os
-from typing import Optional, Dict, Tuple
+from typing import Dict, Tuple
 
 import requests
 
-from instascrape_adaptor.json_processor import JsonDict
+from json_processor import JsonDict
 from utils import Authenticator
 
 

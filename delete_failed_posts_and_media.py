@@ -1,6 +1,6 @@
 import os
 
-from instascrape_adaptor.json_processor import JsonDict
+from json_processor import JsonDict
 
 
 def delete_failed_posts_and_media(unprocessed_post_json_file, processed_post_json_file, img_dir):

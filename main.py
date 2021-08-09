@@ -1,15 +1,13 @@
-import os
-
 from create_scraping_folder import create_scraping_folder
-from delete_irrelevant_images import delete_failed_posts_and_media
-from instagram_scraper.tag_scraper import TagScraper, scrape_tags
-from scrape_posts_under_tag import scrape_posts
-from text_extraction import find_similar_names_from_posts
+from delete_failed_posts_and_media import delete_failed_posts_and_media
+from instagram_scraper.tag_scraper import scrape_tags
+from instagram_scraper.scrape_posts_under_tag import scrape_posts
+from instagram_preprocessing.text_extraction import find_similar_names_from_posts
 
 """
 Configuring Destinations
 """
-DATA_DIR = 'data/0805'
+DATA_DIR = 'data/0809'
 
 if __name__ == '__main__':
     """
@@ -19,11 +17,9 @@ if __name__ == '__main__':
 
     # """
     # Scraping posts' shortcode under a tag
+    # possible hashtags are 'fakeaccount', 'fakeaccounts', 'reportthem' and 'scammers'
     # """
     # scrape_tags('fakeaccount', MAX_ID_FILE, POST_CODE___CSV)
-    # scrape_tags('fakeaccounts', MAX_ID_FILE, POST_CODE___CSV)
-    # scrape_tags('reportthem', MAX_ID_FILE, POST_CODE___CSV)
-    # scrape_tags('scammers', MAX_ID_FILE, POST_CODE___CSV)
 
     # """
     # Scrape posts

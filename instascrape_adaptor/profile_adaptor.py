@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Tuple
+from typing import Dict, Tuple
 
 from instascrape_adaptor.scraper_adaptor import ScraperAdaptor
 

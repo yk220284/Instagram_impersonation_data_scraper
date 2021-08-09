@@ -6,7 +6,7 @@ from time import sleep
 import pandas as pd
 import requests
 
-from instascrape_adaptor.json_processor import JsonDict
+from json_processor import JsonDict
 from utils import Authenticator
 
 

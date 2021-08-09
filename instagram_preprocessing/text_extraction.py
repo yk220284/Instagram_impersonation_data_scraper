@@ -1,14 +1,14 @@
 import concurrent.futures
 import heapq
-from typing import List, Dict, Tuple
+from typing import Tuple
 
 import pytesseract
 import textdistance
 from PIL import Image
 
-from instascrape_adaptor.json_processor import JsonDict
-from scrape_posts_under_tag import timing
-from username_policy import UserName
+from json_processor import JsonDict
+from instagram_preprocessing.username_policy import UserName
+from utils import timing
 
 
 class ImageTextExtractor:
@@ -91,7 +91,3 @@ def find_similar_names_from_posts(post_json_file, img_dir, rlt_file):
         rlt = [r for r, success in results if success]
         print(f"processed {len(rlt)} posts")
         JsonDict.extend(rlt, rlt_file)
-
-# img = ImageTextExtractor("data/0615/img/CMiLRPWJF5B.png")
-# img.extract_texts()
-# print(img.texts)

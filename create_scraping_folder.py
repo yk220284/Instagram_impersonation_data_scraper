@@ -1,6 +1,6 @@
 import os.path
 
-from instascrape_adaptor.json_processor import JsonDict
+from json_processor import JsonDict
 
 
 def create_scraping_folder(DATA_DIR):

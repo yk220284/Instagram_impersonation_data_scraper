@@ -1,7 +1,6 @@
-import os.path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
-from instascrape import Profile, Post
+from instascrape import Profile
 
 from instascrape_adaptor.profile_adaptor import ProfileAdaptor
 from instascrape_adaptor.scraper_adaptor import ScraperAdaptor
