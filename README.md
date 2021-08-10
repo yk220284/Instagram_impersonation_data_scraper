@@ -1,17 +1,17 @@
 # Instagram Impersonation Data Scraper
 
-This script focuses on data scrapping. Data persistence, exploration and labelling is dealt
+This script focuses on data scraping. Data persistence, exploration and labelling is dealt
 by [this Angular app](https://github.com/yk220284/instagram-data-viewer).
 
-## Scrapping pipeline
+## Scraping pipeline
 
-`main.py` contains the main scrapping pipeline. Below are components contained.
+`main.py` contains the main scraping pipeline. Below are components contained.
 
-### Tag scrapper
+### Tag scraper
 
-`instagram_scraper/tag_scraper.py` contains `TagScrapper` class that scrape shortcode for posts under a hashtag.
+`instagram_scraper/tag_scraper.py` contains `TagScraper` class that scrape shortcode for posts under a hashtag.
 
-### Post scrapper
+### Post scraper
 
 `instagram_scraper/scrape_posts_under_tag.py` contains the main logic to scrap posts given the shortcode, utilising
 
