@@ -69,9 +69,9 @@ class TagScraper:
             sleep(sleep_interval)
 
 
-def scrape_tags(hashtag, max_id_file, post_csv_file):
+def scrape_tags(hashtag, max_id_file, post_csv_file, page_cnt=10):
     fake_account_tag = TagScraper(hashtag, max_id_file)
-    fake_account_tag.scrape_pages(page_cnt=10, sleep_interval=2)
+    fake_account_tag.scrape_pages(page_cnt=page_cnt, sleep_interval=2)
     fake_account_tag.save_record(post_csv_file, max_id_file)
     fake_account_tag.tidy_record(post_csv_file)
 

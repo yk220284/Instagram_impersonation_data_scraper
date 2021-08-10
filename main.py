@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # Scraping posts' shortcode under a tag
     # possible hashtags are 'fakeaccount', 'fakeaccounts', 'reportthem' and 'scammers'
     # """
-    # scrape_tags('fakeaccount', MAX_ID_FILE, POST_CODE___CSV)
+    # scrape_tags('fakeaccount', MAX_ID_FILE, POST_CODE___CSV, 2)
 
     # """
     # Scrape posts
